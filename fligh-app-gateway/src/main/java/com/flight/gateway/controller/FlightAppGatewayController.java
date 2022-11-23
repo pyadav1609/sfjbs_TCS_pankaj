@@ -11,6 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,10 +23,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.admin.app.entity.Admin;
 import com.admin.app.entity.Flight;
+import com.flight.gateway.entity.TicketBookResponse;
 import com.user.app.entity.Passenger;
 import com.user.app.entity.Ticket;
 import com.user.app.entity.User;
 
+@CrossOrigin
 @RestController
 public class FlightAppGatewayController {
 	
@@ -78,6 +81,17 @@ public class FlightAppGatewayController {
 		return response;
 	}
 	
+	@DeleteMapping("/flight/{flightNumber}")
+	public ResponseEntity<String> deleteFlightdetailById(@PathVariable Integer flightNumber) {
+		System.out.println("getting flight details for "+flightNumber);
+		
+		ResponseEntity<String> response = restTemplate.exchange("http://flight-admin-service/api/v1.0/flight/airline/{flightnumber}", HttpMethod.DELETE
+				,null,new ParameterizedTypeReference<String>() {},flightNumber);
+		
+		System.out.println("Response received as : "+response);
+		return response;
+	}
+	
 	@GetMapping("/flight")
 	public ResponseEntity<List<Flight>> getFlights() {
 		ResponseEntity<List<Flight>> response = restTemplate.exchange("http://flight-admin-service/api/v1.0/flight/airline/list", HttpMethod.GET
@@ -123,7 +137,7 @@ public class FlightAppGatewayController {
 	
 	
 	@PostMapping("/flight/book/{flightNumber}")
-	public ResponseEntity<String> bookFlight(@PathVariable Integer flightNumber,@RequestBody List<Passenger> passangerDetails,@RequestParam Map<String,String> userDetails) {
+	public TicketBookResponse bookFlight(@PathVariable Integer flightNumber,@RequestBody List<Passenger> passangerDetails,@RequestParam Map<String,String> userDetails) {
 		
 		String userName = userDetails.get("userName");
 		Integer seatCount = Integer.parseInt(userDetails.get("seatCount"));
@@ -151,10 +165,14 @@ public class FlightAppGatewayController {
 //					HttpMethod.POST,request,new ParameterizedTypeReference<User>() {},userName,seatCount,email);
 			
 			String responseMsg = user.getSeatCount()+" Ticket has been "+user.getTicketStatus()+" with PNR: "+user.getPNRnumber()+" for the user: "+user.getUserName();
-			
-			return new ResponseEntity<String>(responseMsg, HttpStatus.CREATED);
+			TicketBookResponse tktBookResponse = new TicketBookResponse(responseMsg, "SUCCESS");
+			return tktBookResponse;
+			//return new ResponseEntity<String>(responseMsg, HttpStatus.CREATED);
 		}else {
-			return new ResponseEntity<String>("Flight does not exists",HttpStatus.NOT_FOUND);
+			String errorMsg = "Flight does not exists";
+			TicketBookResponse tktBookResponse = new TicketBookResponse(errorMsg, "SUCCESS");
+			return tktBookResponse;
+			//return new ResponseEntity<String>("Flight does not exists",HttpStatus.NOT_FOUND);
 		}
 	}
 	

@@ -1,0 +1,87 @@
+<app-navbar></app-navbar>
+<div class="div_bgImg">
+<h1>WELCOME {{user}}</h1>
+<h4 class="display-1">LIST OF ALL FLIGHTS</h4>
+<br/>
+<div>
+  <marquee direction="right" 
+  behavior="alternate" >
+  <!-- style="border:#EEEEEE 5px SOLID; color: #17A2B8;"> -->
+  <b>Press Cancel Button To Un-Register Any Flight</b>
+</marquee>
+</div>
+
+<ol class="list-group list-group-numbered">
+    <li class="list-group-item d-flex justify-content-between align-items-start" *ngFor="let s of flights; index as i">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">Flight Number : {{s.flightNumber}}</div>
+        Below is the details of {{s.flightNumber}} flight :<br><br>
+        <b>Air Line</b>                 : {{s.airline}}<br>
+        <b>Flight Source</b>           : {{s.flightSource}}<br>
+        <b>Flight Destination</b>      : {{s.flightDestination}}<br>
+        <b>Start Date Time</b>         : {{s.startDateTime}}<br>
+        <b>End Date Time</b>           : {{s.endDateTime}}<br>
+        <b>Scheduled Days</b>         : {{s.scheduledDays}}<br>
+        <b>Instruments</b>             : {{s.instruments}}<br>
+        <b>Business Class Seat</b>     : {{s.businessClassSeat}}<br>
+        <b>Non Business Class Seat</b> : {{s.nonBusinessClassSeat}}<br>
+        <b>Ticket Fare</b>             : {{s.ticketFare}}<br>
+        <b>Flight Rows</b>             : {{s.flightRows}}<br>
+        <b>Meal Type</b>               : {{s.mealType}}<br>
+      </div>
+      <button type="submit" (click)="deleteFlight1(s,i)   " style="background-color: #2a6885;" class="btn-close" aria-label="Close"></button>
+    </li>
+  </ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- <form class="row g-3 needs-validation" novalidate>
+    <div class="col-md-4">
+        <label for="validationCustom01" class="form-label">Airline Name</label>
+        <input [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="airline.name" class="form-control" id="validationCustom01" placeholder="Enter your first name" required>
+        <div class="valid-feedback">
+
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <label for="validationCustom01" class="form-label">Airline Contact</label>
+        <input [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="airline.contactNumber" class="form-control" id="validationCustom01" placeholder="Enter your first name" required>
+        <div class="valid-feedback">
+            
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <label for="validationCustom01" class="form-label">Airline Description</label>
+        <input [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="airline.description" class="form-control" id="validationCustom01" placeholder="Enter your first name" required>
+        <div class="valid-feedback">
+            
+        </div>
+    </div>
+
+    <div style="text-align: center;" class="col-12">
+        <button (click)="save()" class="btn btn-primary" type="submit">Submit form</button>
+    </div>
+
+    </form> -->
